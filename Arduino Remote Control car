@@ -1,0 +1,83 @@
+#define enA 2
+#define in1 3
+#define in2 4
+#define in3 5
+#define in4 6
+#define enB 7
+ 
+#include <SoftwareSerial.h>
+
+SoftwareSerial bt1(10, 11); // RX, TX
+
+char in;
+int spd=200;
+
+void setup() {
+
+pinMode(enA,OUTPUT);
+pinMode(in1,OUTPUT);
+pinMode(in2,OUTPUT);
+pinMode(in3,OUTPUT);
+pinMode(in4,OUTPUT);
+pinMode(enB,OUTPUT);
+
+Serial.begin(9600);
+bt.begin(9600);
+}
+void loop() {
+
+ if(in == 'A'){
+ rightMotorForward(spd);
+ leftMotorForward (spd);
+  } 
+ if(in == 'B'){
+ rightMotorBackward(spd);
+ leftMotorBackward (spd);
+  } 
+ if(in == 'C'){
+ rightMotorForward(spd);
+ leftMotorBackward (spd);
+  } 
+ if(in == 'D'){
+ rightMotorBackward(spd);
+ leftMotorForward (spd);
+  }  
+ if(in == 'E'){
+ rightMotorBackward(0);
+ leftMotorBackward (0);
+  } 
+
+
+comm();
+}
+void leftMotorForward(int i){
+  analogWrite(enA,i);
+  digitalWrite(in1,LOW);
+  digitalWrite(in2,HIGH);
+  }
+void leftMotorBackward(int i){
+  analogWrite(enA,i);
+  digitalWrite(in1,HIGH);
+  digitalWrite(in2,LOW);
+  }
+void rightMotorForward(int i){
+  analogWrite(enB,i);
+  digitalWrite(in3,HIGH);
+  digitalWrite(in4,LOW);
+  }
+void rightMotorBackward(int i){
+    analogWrite(enB,i);
+  digitalWrite(in3,LOW);
+  digitalWrite(in4,HIGH);
+  }
+
+void comm(){
+  
+    if (bt1.available()) {
+    in = bt1.read();
+    Serial.write(bt.read());
+  }
+  if (Serial.available()) {
+    bt1.write(Serial.read());
+  } 
+}   
